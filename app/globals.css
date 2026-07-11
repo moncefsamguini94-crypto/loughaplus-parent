@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand — parent trust palette: calm ocean + warm amber. */
+    --brand-900: 210 48% 13%;
+    --brand-700: 206 42% 27%;
+    --brand-500: 185 54% 38%;
+    --brand-300: 186 50% 72%;
+    --brand-100: 190 48% 95%;
+
+    /* Action (CTA) */
+    --action-600: 33 82% 46%;
+    --action-500: 38 90% 58%;
+    --action-100: 39 78% 92%;
+
+    /* Semantic */
+    --whatsapp: 142 70% 49%; /* #25D366 */
+    --success: 170 62% 34%;
+    --warning: 38 90% 58%;
+    --destructive: 4 78% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Neutrals */
+    --background: 42 52% 98%;
+    --foreground: 210 40% 10%;
+    --muted: 38 34% 94%;
+    --muted-foreground: 210 10% 38%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 16% 9%;
+
+    --border: 38 20% 86%;
+    --input: 38 20% 86%;
+    --ring: 38 90% 58%;
+
+    --radius: 16px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Keep numbers / latin tokens LTR inside RTL flow */
+  .ltr-token {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+  }
+
+  /* Accessible focus ring */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    .btn-attention,
+    .btn-attention::after {
+      animation: none !important;
+    }
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply py-8 md:py-14;
+  }
+
+  /* Premium card surface — generous radius + soft elevation (mobile-first) */
+  .u-card {
+    @apply rounded-3xl border border-border bg-card shadow-sm transition-all duration-300;
+  }
+
+  .ref-section {
+    @apply relative overflow-hidden py-8 md:py-14;
+  }
+
+  .ref-card {
+    @apply rounded-[2rem] border border-white/70 bg-white/95 shadow-lg shadow-brand-900/10 backdrop-blur;
+  }
+
+  .ref-soft-card {
+    @apply rounded-[1.75rem] border border-border bg-card shadow-md shadow-brand-900/5;
+  }
+
+  .ref-badge {
+    @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-[13px] font-extrabold;
+  }
+
+  .ref-cta {
+    @apply inline-flex h-14 items-center justify-center rounded-full px-8 text-[17px] font-extrabold shadow-lg shadow-action-600/20 transition-all active:scale-[0.98] md:h-16 md:text-[18px];
+  }
+
+
+  .btn-attention {
+    position: relative;
+    overflow: hidden;
+    animation: button-breathe 7.5s ease-in-out infinite;
+    will-change: transform, box-shadow;
+  }
+
+  .btn-attention::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(120%);
+    background: linear-gradient(
+      110deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.18) 48%,
+      transparent 70%
+    );
+    animation: button-shine 10s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes button-breathe {
+    0%,
+    100% {
+      transform: translateY(0) scale(1);
+      box-shadow: 0 10px 22px hsl(var(--action-600) / 0.14);
+    }
+    50% {
+      transform: translateY(-0.75px) scale(1.004);
+      box-shadow: 0 14px 28px hsl(var(--action-600) / 0.18);
+    }
+  }
+
+  @keyframes button-shine {
+    0%,
+    42% {
+      transform: translateX(120%);
+    }
+    58%,
+    100% {
+      transform: translateX(-120%);
+    }
+  }
+
+
+  .btn-no-motion {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .btn-no-motion::after {
+    display: none !important;
+    animation: none !important;
+  }
+
+  .gradient-mesh {
+    background-image:
+      radial-gradient(60% 60% at 80% 0%, hsl(var(--brand-500) / 0.18) 0%, transparent 60%),
+      radial-gradient(50% 50% at 0% 20%, hsl(var(--action-500) / 0.22) 0%, transparent 55%);
+  }
+}

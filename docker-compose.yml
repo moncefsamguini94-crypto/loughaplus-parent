@@ -1,0 +1,27 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.parent
+      args:
+        # NEXT_PUBLIC_* is baked at build time (client bundle).
+        NEXT_PUBLIC_WHATSAPP_PHONE: ${NEXT_PUBLIC_WHATSAPP_PHONE:-212600000000}
+    image: lougha-landing-parent:latest
+    container_name: lougha-landing-parent
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Postgres connection string (stores leads, powers /admin).
+      DATABASE_URL: ${DATABASE_URL:-}
+      # Password protecting the /admin panel.
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      # Optional: also forward leads to a CRM/webhook. If unset, only the DB is used.
+      LEADS_WEBHOOK_URL: ${LEADS_WEBHOOK_URL:-}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
